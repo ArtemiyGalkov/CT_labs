@@ -6,16 +6,16 @@ namespace CT.Lab3.AST
 {
     public class VariableDeclarationNode : ASTNode
     {
-        public string variableName;
+        public string[] variablesName;
         public string type;
 
-        public VariableDeclarationNode(string variableName, string type)
+        public VariableDeclarationNode(string[] variablesName, string type)
         {
-            this.variableName = variableName;
+            this.variablesName = variablesName;
             this.type = type;
         }
 
-        public override object Value => variableName;
+        public string[] VariablesNames => variablesName;
 
         public string Type => type;
     }

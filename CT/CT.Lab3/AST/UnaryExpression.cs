@@ -15,7 +15,7 @@ namespace CT.Lab3.AST
             this.value = value;
         }
 
-        public override object Value => value;
+        public object Value => value;
 
         public UnaryExpressionType Type => type;
     }

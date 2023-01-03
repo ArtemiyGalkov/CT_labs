@@ -10,11 +10,11 @@ namespace CT.Lab3
         private string _code;
         private List<Lexem> lexems;
 
-        private char[] punctuations = new char[] { '{', '}', '(', ')', ',', ';',};
-        private char[] operators = new char[] { '+', '-', '*', '/', ':', '=', '&', '|' };
+        private char[] punctuations = new char[] { '{', '}', '(', ')', ',', ';', '.', };
+        private char[] operators = new char[] { '+', '-', '*', '/', ':', '=', '&', '|', '<', '>' };
         private char[] digits = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', };
-        private char[] stringContainer = new char[] { '"', '\'', };
-        private char[] charContainer = new char[] { };
+        private char[] stringContainer = new char[] { '"', };
+        private char[] charContainer = new char[] { '\'', };
         private string[] keyWords = new string[] 
             { "MODULE", "CONST", "VAR", "BEGIN", "END", "REPEAT", "UNTIL", "WHILE", "FOR", 
             "TO", "BY", "DO", "LOOP", "IF", "THEN", "ELSE", "ELSIF", "EXIT", "CASE", "OF" };
@@ -119,7 +119,7 @@ namespace CT.Lab3
         {
             var lexem = new Lexem(_code[i].ToString());
 
-            while (i < _code.Length - 1 && Char.IsLetter(_code[i + 1]))
+            while (i < _code.Length - 1 && (Char.IsLetter(_code[i + 1]) || Char.IsDigit(_code[i + 1])))
             {
                 lexem.Code.Append(_code[i + 1]);
                 i++;

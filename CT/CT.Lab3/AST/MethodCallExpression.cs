@@ -7,24 +7,22 @@ namespace CT.Lab3.AST
     public class MethodCallExpression : ExpressionNode
     {
         private string methodName;
-        private ExpressionNode[] ardumentsNodes;
+        private ExpressionNode[] arguments;
 
-        public MethodCallExpression(string methodName, ExpressionNode[] ardumentsNodes)
+        public MethodCallExpression(string methodName, ExpressionNode[] arduments)
         {
             this.methodName = methodName;
-            this.ardumentsNodes = ardumentsNodes;
+            this.arguments = arduments;
         }
-
-        public override object Value => throw new NotImplementedException();
 
         public string MethodName()
         {
-            return methodName
+            return methodName;
         }
 
         public ASTNode[] Arguments()
         {
-            return ardumentsNodes;
+            return arguments;
         }
     }
 }

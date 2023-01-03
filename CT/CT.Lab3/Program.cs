@@ -11,9 +11,13 @@ namespace CT.Lab3
             var code = File.ReadAllText("Code.txt");
             code = Regex.Replace(code, @"\t|\n|\r", " ");
 
-            var parser = new LexemParser();
+            var lexemParser = new LexemParser();
+            var lexems = lexemParser.ParseToLexems(code);
 
-            var result = parser.ParseToLexems(code);
+            var astParser = new ModulaParser(lexems.ToArray());
+            var tree = astParser.ParseLexemas();
+
+            Console.WriteLine("Done");
         }
     }
 }

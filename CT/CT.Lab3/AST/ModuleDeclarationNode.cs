@@ -13,6 +13,6 @@ namespace CT.Lab3.AST
             this.moduleName = moduleName;
         }
 
-        public override object Value { get => moduleName; }
+        public string Name { get => moduleName; }
     }
 }

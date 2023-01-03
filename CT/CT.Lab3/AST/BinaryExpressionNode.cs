@@ -16,7 +16,5 @@ namespace CT.Lab3.AST
             this.rightNode = rightNode;
             this.operation = operation;
         }
-
-        public override object Value => throw new NotImplementedException();
     }
 }

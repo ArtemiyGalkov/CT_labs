@@ -13,11 +13,6 @@ namespace CT.Lab3.AST
             this.identifierName = identifierName;
         }
 
-        public override object Value { get => identifierName; }
-
-        //public override string Type()
-        //{
-        //    return "IdentifierNode";
-        //}
+        public string Name { get => identifierName; }
     }
 }

@@ -17,6 +17,10 @@ namespace CT.Lab3.AST
             this.elseNode = elseNode;
         }
 
-        public override object Value => throw new NotImplementedException();
+        public ExpressionNode Condition { get => condition; }
+
+        public ASTNode ThenNode { get => thenNode; }
+
+        public ASTNode ElseNode { get => elseNode; }
     }
 }

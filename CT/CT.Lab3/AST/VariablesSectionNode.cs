@@ -13,8 +13,6 @@ namespace CT.Lab3.AST
             this.variableDeclarationNodes = variableDeclarationNodes;
         }
 
-        public override object Value => throw new NotImplementedException();
-
         public VariableDeclarationNode[] VariableDeclarationNodes()
         {
             return variableDeclarationNodes;

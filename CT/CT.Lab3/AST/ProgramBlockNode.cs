@@ -12,7 +12,6 @@ namespace CT.Lab3.AST
         {
             this.nodes = nodes;
         }
-
-        public override object Value => throw new NotImplementedException();
+        public ASTNode[] Nodes { get => nodes; }
     }
 }

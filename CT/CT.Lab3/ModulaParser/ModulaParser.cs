@@ -1,21 +1,35 @@
 ﻿using CT.Lab3.AST;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CT.Lab3
-{
+{    
     public class ModulaParser
     {
         private Lexem[] lexems;
+        private string[] basicTypes = new string[]
+        {
+            "INTEGER", "CARDINAL", "REAL", "LONGREAL", "CARDINAL", "BOOLEAN",
+        };
+
+        public ModulaParser(Lexem[] lexems)
+        {
+            this.lexems = lexems;
+        }
+
         int currentIndex = 0;
 
-        public void ParseLexemas()
+        public List<ASTNode> ParseLexemas()
         {
-            for (int currentIndex = 0; currentIndex < lexems.Length; currentIndex++)
+            List<ASTNode> nodes = new List<ASTNode>();
+            while (currentIndex < lexems.Length)
             {
-                ParseNode();
+                nodes.Add(ParseNode());
             }
+
+            return nodes;
         }
 
         private ASTNode ParseNode()
@@ -25,7 +39,9 @@ namespace CT.Lab3
             switch (currentLexem.Type)
             {
                 case LexemType.Keyword:
-                    break;
+                    return ParseKeyword();
+                default:
+                    return ParseExpression();
             }
         }
 
@@ -76,20 +92,31 @@ namespace CT.Lab3
         {
             var declarations = new List<VariableDeclarationNode>();
 
-            if (lexems[currentIndex + 1].Type == LexemType.Identifier)
+            if (lexems[currentIndex].Type == LexemType.Identifier)
             {
                 do
                 {
-                    var identifierNode = lexems[++currentIndex];
+                    var variableNames = new List<string>();
+
+                    var identifierNode = lexems[currentIndex];
+                    variableNames.Add(identifierNode.Code.ToString());
+
+                    while (lexems[currentIndex + 1].Code.ToString() == ",")
+                    {
+                        SkipPunctuation(",");
+                        identifierNode = lexems[currentIndex];
+                        variableNames.Add(identifierNode.Code.ToString());
+                    }
+
                     SkipOperator(":");
                     var typeNode = lexems[currentIndex];
 
-                    if (typeNode.Type != LexemType.Keyword || !IsTypeLexem(typeNode))
+                    if (!IsTypeLexem(typeNode))
                     {
                         throw new Exception();
                     }
 
-                    var declaration = new VariableDeclarationNode(identifierNode.Code.ToString(), typeNode.Code.ToString());
+                    var declaration = new VariableDeclarationNode(variableNames.ToArray(), typeNode.Code.ToString());
 
                     SkipSemicolon();
 
@@ -105,51 +132,76 @@ namespace CT.Lab3
             return new VariablesSectionNode(declarations.ToArray());
         }
 
-        private ProgramBlockNode ParseProgramBlock()
+        private ProgramBlockNode ParseProgramBlock(bool methodBody = true)
         {
             var result = new List<ASTNode>();
 
             //while (!(lexems[++currentIndex].Type == LexemType.Keyword && lexems[currentIndex].Code.ToString() == "END"))
-            currentIndex++;
+            //currentIndex++;
 
             while (!ProgramBlockEnd())
             {
                 result.Add(ParseNode());
+                SkipPunctuation(";", false);
+            }
+
+            if (methodBody)
+            {
+                SkipKeyword("END");
+
+                if (lexems[currentIndex++].Type != LexemType.Identifier)
+                {
+                    throw new Exception();
+                }
+
+                if (!CheckLexem(LexemType.Punctuation, ";") && !CheckLexem(LexemType.Punctuation, "."))
+                {
+                    throw new Exception();
+                }
+
+                currentIndex++;
             }
 
             return new ProgramBlockNode(result.ToArray());
         }
 
-        private ConditionNode ParseCondition()
+        private ConditionNode ParseCondition(bool parsingElseIf = false)
         {
             var expression = ParseExpression();
-            SkipThenKeyword();
-            var thenNode = ParseProgramBlock();
+
+            SkipThenKeyword(false);
+
+            var thenNode = ParseProgramBlock(false);
 
             ASTNode elseNode = null;
 
             //while(lexems[++currentIndex].Type == LexemType.Keyword && lexems[currentIndex].Code.ToString() == "END")
-            currentIndex++;
+            //currentIndex++;
 
             if (CheckLexem(LexemType.Keyword, "ELSIF"))
             {
                 SkipKeyword("ELSIF");
-                elseNode = ParseCondition();
+                elseNode = ParseCondition(true);
             }
             else if (CheckLexem(LexemType.Keyword, "ELSE"))
             {
                 SkipKeyword("ELSE");
-                elseNode = ParseProgramBlock();
+                elseNode = ParseProgramBlock(false);
             }
 
-            SkipEndKeyword();
-            SkipSemicolon();
+            if (!parsingElseIf)
+            {
+                SkipEndKeyword(false);
+            }
+
+            //SkipSemicolon(false);
 
             return new ConditionNode(expression, thenNode, elseNode);
         }
 
         private ForLoopNode ParseForLoop()
         {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -199,6 +251,10 @@ namespace CT.Lab3
 
                 var operation = new Lexem(":=");
             }
+            else
+            {
+                //currentIndex++;
+            }
 
             if (CheckLexem(LexemType.Operator))
             {
@@ -224,7 +280,7 @@ namespace CT.Lab3
 
         private MethodCallExpression ParseMethodCall(Lexem methodIdentifier)
         {
-            SkipPunctuation("(");
+            SkipPunctuation("(", false);
             var parameters = new List<ExpressionNode>();
 
             while (!CheckLexem(LexemType.Punctuation, ")"))
@@ -233,11 +289,11 @@ namespace CT.Lab3
 
                 if (!CheckLexem(LexemType.Punctuation, ")"))
                 {
-                    SkipPunctuation(",");
+                    SkipPunctuation(",", false);
                 }
             }
 
-            SkipPunctuation(")");
+            SkipPunctuation(")", false);
 
             return new MethodCallExpression(methodIdentifier.Code.ToString(), parameters.ToArray());
         }
@@ -246,29 +302,19 @@ namespace CT.Lab3
 
         #region auxiliary
 
-        private void SkipThenKeyword()
+        private void SkipThenKeyword(bool skipNext = true)
         {
             SkipKeyword("THEN");
         }
 
-        private void SkipEndKeyword()
+        private void SkipEndKeyword(bool skipNext = true)
         {
             SkipKeyword("END");
         }
 
         private void SkipKeyword(string keyword)
         {
-            //if (lexems[++currentIndex].Type == LexemType.Keyword && lexems[currentIndex].Code.ToString() == keyword)
-            currentIndex++;
-
-            if (CheckLexem(LexemType.Keyword, keyword))
-            {
-                currentIndex++;
-            }
-            else
-            {
-                throw new Exception();
-            }
+            SkipLexem(LexemType.Keyword, keyword, false);
         }
 
         private void SkipOperator(string operatorName)
@@ -276,9 +322,9 @@ namespace CT.Lab3
             SkipLexem(LexemType.Operator, operatorName);
         }
 
-        private void SkipSemicolon()
+        private void SkipSemicolon(bool skipNext = true)
         {
-            SkipPunctuation(";");
+            SkipPunctuation(";", skipNext);
         }
 
         private void SkipComma()
@@ -286,15 +332,17 @@ namespace CT.Lab3
             SkipPunctuation(",");
         }
 
-        private void SkipPunctuation(string symbol)
+        private void SkipPunctuation(string symbol, bool skipNext = true)
         {
-            SkipLexem(LexemType.Punctuation, symbol);
+            SkipLexem(LexemType.Punctuation, symbol, skipNext);
         }
 
-        private void SkipLexem(LexemType lexemType, string code)
+        private void SkipLexem(LexemType lexemType, string code, bool skipNext = true)
         {
-            //if (lexems[++currentIndex].Type == lexemType && lexems[currentIndex].Code.ToString() == code)
-            currentIndex++;
+            if (skipNext)
+            {
+                currentIndex++;
+            }
 
             if (CheckLexem(lexemType, code))
             {
@@ -308,7 +356,7 @@ namespace CT.Lab3
 
         private bool IsTypeLexem(Lexem lexem)
         {
-            throw new NotImplementedException();
+            return basicTypes.Contains(lexem.Code.ToString());
         }
 
         private bool CheckLexem(LexemType lexemType, string code)
