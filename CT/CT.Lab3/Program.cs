@@ -14,8 +14,8 @@ namespace CT.Lab3
             var lexemParser = new LexemParser();
             var lexems = lexemParser.ParseToLexems(code);
 
-            var astParser = new ModulaParser(lexems.ToArray());
-            var tree = astParser.ParseLexemas();
+            var astParser = new ModulaParser();
+            var tree = astParser.ParseLexemas(lexems.ToArray());
 
             Console.WriteLine("Done");
         }

@@ -15,14 +15,14 @@ namespace CT.Lab3.AST
             this.arguments = arduments;
         }
 
-        public string MethodName()
+        public string MethodName
         {
-            return methodName;
+            get => methodName;
         }
 
-        public ASTNode[] Arguments()
+        public ExpressionNode[] Arguments
         {
-            return arguments;
+            get => arguments;
         }
     }
 }

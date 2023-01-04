@@ -14,15 +14,16 @@ namespace CT.Lab3
             "INTEGER", "CARDINAL", "REAL", "LONGREAL", "CARDINAL", "BOOLEAN",
         };
 
-        public ModulaParser(Lexem[] lexems)
+        public ModulaParser()
         {
-            this.lexems = lexems;
         }
 
         int currentIndex = 0;
 
-        public List<ASTNode> ParseLexemas()
+        public List<ASTNode> ParseLexemas(Lexem[] lexems)
         {
+            this.lexems = lexems;
+
             List<ASTNode> nodes = new List<ASTNode>();
             while (currentIndex < lexems.Length)
             {
@@ -136,9 +137,6 @@ namespace CT.Lab3
         {
             var result = new List<ASTNode>();
 
-            //while (!(lexems[++currentIndex].Type == LexemType.Keyword && lexems[currentIndex].Code.ToString() == "END"))
-            //currentIndex++;
-
             while (!ProgramBlockEnd())
             {
                 result.Add(ParseNode());
@@ -174,9 +172,6 @@ namespace CT.Lab3
             var thenNode = ParseProgramBlock(false);
 
             ASTNode elseNode = null;
-
-            //while(lexems[++currentIndex].Type == LexemType.Keyword && lexems[currentIndex].Code.ToString() == "END")
-            //currentIndex++;
 
             if (CheckLexem(LexemType.Keyword, "ELSIF"))
             {
@@ -236,7 +231,7 @@ namespace CT.Lab3
                 }
                 else
                 {
-                    expression = new UnaryExpression(UnaryExpressionType.Variable, new IdentifierNode(identifier.Code.ToString()));
+                    expression = new GetVariableValueExpression(identifier.Code.ToString());
                 }
             }
             else
@@ -261,7 +256,7 @@ namespace CT.Lab3
                 var operation = lexems[currentIndex++];
                 var rightExpression = ParseExpression();
 
-                if (!(expression is UnaryExpression unary && unary.Type is UnaryExpressionType.Variable))
+                if (!(expression is GetVariableValueExpression))
                 {
                     throw new Exception("Left operator of assigment must be a variable");
                 }

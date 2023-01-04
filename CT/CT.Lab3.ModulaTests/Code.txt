@@ -1,0 +1,29 @@
+MODULE IfDemo;
+
+VAR Index1 : INTEGER;
+
+BEGIN
+
+    IF Index1 < 4 THEN                   
+        WriteString("Index1 is less than 4.");
+        WriteInt(Index1,4);
+        WriteLn();
+    END;
+
+    IF Index1 = 5 THEN                  
+        WriteString("Index1 is 5");
+    ELSE
+        WriteString("Index1 is not 5");
+    END;
+    WriteLn();
+
+    IF Index1 = 2 THEN             
+        WriteString("Index1 is 2");
+    ELSIF Index1 = 6 THEN
+        WriteString("Index1 is 6");
+    ELSE
+        WriteString("I really don't care what Index1 is");
+    END;  
+    WriteLn();
+
+END IfDemo.

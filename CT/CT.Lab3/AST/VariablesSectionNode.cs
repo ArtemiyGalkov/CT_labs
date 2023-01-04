@@ -13,9 +13,9 @@ namespace CT.Lab3.AST
             this.variableDeclarationNodes = variableDeclarationNodes;
         }
 
-        public VariableDeclarationNode[] VariableDeclarationNodes()
+        public VariableDeclarationNode[] VariableDeclarationNodes
         {
-            return variableDeclarationNodes;
+            get => variableDeclarationNodes;
         }
     }
 }

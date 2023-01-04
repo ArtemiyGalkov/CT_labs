@@ -16,5 +16,9 @@ namespace CT.Lab3.AST
             this.rightNode = rightNode;
             this.operation = operation;
         }
+
+        public ASTNode LeftNode { get => leftNode; }
+        public ASTNode RightNode { get => rightNode; }
+        public object Operation { get => operation; }
     }
 }
