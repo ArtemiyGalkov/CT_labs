@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CT.Lab3.Modula\CT.Lab3.Modula.csproj" />
     <ProjectReference Include="..\CT.Lab3\CT.Lab3.Modula.csproj" />
   </ItemGroup>
 
