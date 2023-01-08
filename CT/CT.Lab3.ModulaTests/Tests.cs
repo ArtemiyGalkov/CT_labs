@@ -1,4 +1,5 @@
 using CT.Lab3.AST;
+using CT.Lab3.CommonCode.ConcreteLanguageSyntax;
 using NUnit.Framework;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -13,7 +14,7 @@ namespace CT.Lab3.ModulaTests
         [SetUp]
         public void Setup()
         {
-            lexemParser = new LexemParser();
+            lexemParser = new LexemParser(new ModulaSyntaxProvider());
             astParser = new ModulaParser();
         }
 

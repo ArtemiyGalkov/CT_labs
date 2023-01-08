@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CT.Lab3.CommonCode;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,15 +10,12 @@ namespace CT.Lab3
     {
         private string _code;
         private List<Lexem> lexems;
+        private ISyntaxProvider syntaxProvider;
 
-        private char[] punctuations = new char[] { '{', '}', '(', ')', ',', ';', '.', };
-        private char[] operators = new char[] { '+', '-', '*', '/', ':', '=', '&', '|', '<', '>' };
-        private char[] digits = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', };
-        private char[] stringContainer = new char[] { '"', };
-        private char[] charContainer = new char[] { '\'', };
-        private string[] keyWords = new string[] 
-            { "MODULE", "CONST", "VAR", "BEGIN", "END", "REPEAT", "UNTIL", "WHILE", "FOR", 
-            "TO", "BY", "DO", "LOOP", "IF", "THEN", "ELSE", "ELSIF", "EXIT", "CASE", "OF" };
+        public LexemParser(ISyntaxProvider syntaxProvider)
+        {
+            this.syntaxProvider = syntaxProvider;
+        }
 
         public List<Lexem> ParseToLexems(string code)
         {
@@ -31,23 +29,23 @@ namespace CT.Lab3
                 {
                     continue;
                 }
-                else if (punctuations.Contains(curChar))
+                else if (syntaxProvider.Punctuations.Contains(curChar))
                 {
                     lexems.Add(new Lexem(curChar.ToString()) { Type = LexemType.Punctuation });
                 }
-                else if (operators.Contains(curChar))
+                else if (syntaxProvider.Operators.Contains(curChar))
                 {
                     lexems.Add(new Lexem(curChar.ToString()) { Type = LexemType.Operator });
                 }
-                else if (digits.Contains(curChar))
+                else if (syntaxProvider.Digits.Contains(curChar))
                 {
                     lexems.Add(ReadNumber(ref i));
                 }
-                else if (stringContainer.Contains(curChar))
+                else if (syntaxProvider.StringContainer.Contains(curChar))
                 {
                     lexems.Add(ReadString(ref i));
                 }
-                else if (charContainer.Contains(curChar))
+                else if (syntaxProvider.CharContainer.Contains(curChar))
                 {
                     lexems.Add(ReadChar(ref i));
                 }
@@ -55,7 +53,7 @@ namespace CT.Lab3
                 {
                     var lexem = ReadLetters(ref i);
 
-                    if (keyWords.Contains(lexem.Code.ToString()))
+                    if (syntaxProvider.KeyWords.Contains(lexem.Code.ToString()))
                     {
                         lexem.Type = LexemType.Keyword;
                     }
@@ -75,7 +73,7 @@ namespace CT.Lab3
         {
             var lexem = new Lexem(_code[i].ToString()) { Type = LexemType.Number };
 
-            while (i < _code.Length && digits.Contains(_code[i + 1]))
+            while (i < _code.Length && syntaxProvider.Digits.Contains(_code[i + 1]))
             {
                 lexem.Code.Append(_code[i + 1]);
                 i++;
@@ -93,7 +91,7 @@ namespace CT.Lab3
                 lexem.Code.Append(_code[i + 1]);
                 i++;
             }
-            while (i < _code.Length && !stringContainer.Contains(_code[i]));
+            while (i < _code.Length && !syntaxProvider.StringContainer.Contains(_code[i]));
 
             return lexem;
         }
@@ -102,7 +100,7 @@ namespace CT.Lab3
         {
             var lexem = new Lexem(_code[i].ToString()) { Type = LexemType.String };
 
-            if (i + 2 >= _code.Length || charContainer.Contains(_code[i + 2]))
+            if (i + 2 >= _code.Length || syntaxProvider.CharContainer.Contains(_code[i + 2]))
             {
                 throw new Exception();
             }
