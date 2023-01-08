@@ -15,8 +15,8 @@ namespace CT.Lab3.Modula
 
         public override string[] KeyWords => new string[]
             { 
-                "break","default","func","interface","select","case","Go","map","Struct","else",
-                "Goto","Switch","const","if","range","Type","continue","for","import","return","Var" 
+                "break","default","func","interface","struct","select","case","Go","map","else","package",
+                "Goto","switch","const","if","range","type","continue","for","import","return","var",
             };
     }
 }

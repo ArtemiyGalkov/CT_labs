@@ -72,14 +72,14 @@ namespace CT.Lab3.BASIC
 
         #region keyword parsing
 
-        private VariableInitializingNode ParseVariableInitializing()
+        private VariableInitializationNode ParseVariableInitializing()
         {
             var variable = ParseIdentifier();
             SkipOperator("=");
             var assigningExpression = ParseExpression();
             SkipSemicolon();
 
-            return new VariableInitializingNode(new string[] { variable.Code.ToString() }, "", assigningExpression);
+            return new VariableInitializationNode(new string[] { variable.Code.ToString() }, "", new ExpressionNode[] { assigningExpression });
         }
 
         private VariableInputNode ParseInput()
@@ -169,7 +169,7 @@ namespace CT.Lab3.BASIC
             }
             else if (CheckLexem(LexemType.Identifier))
             {
-                var identifier = ParseIdentifier();//this.lexems[this.currentIndex++];
+                var identifier = ParseIdentifier();
 
                 if (CheckLexem(LexemType.Punctuation, "("))
                 {
