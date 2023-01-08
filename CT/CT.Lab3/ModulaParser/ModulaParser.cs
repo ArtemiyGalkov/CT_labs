@@ -231,7 +231,7 @@ namespace CT.Lab3
                 }
                 else
                 {
-                    expression = new GetVariableValueExpression(identifier.Code.ToString());
+                    expression = new Variable(identifier.Code.ToString());
                 }
             }
             else
@@ -244,24 +244,26 @@ namespace CT.Lab3
                 SkipOperator(":");
                 SkipOperator("=");
 
-                var operation = new Lexem(":=");
+                if (!(expression is Variable))
+                {
+                    throw new Exception("Left operator of assigment must be a variable");
+                }
+
+                var rightExpression = ParseExpression();
+
+                return new VariableAssigmentNode(expression as Variable, rightExpression);
             }
             else
             {
                 //currentIndex++;
             }
 
-            if (CheckLexem(LexemType.Operator))
+            while (CheckLexem(LexemType.Operator))
             {
                 var operation = lexems[currentIndex++];
                 var rightExpression = ParseExpression();
 
-                if (!(expression is GetVariableValueExpression))
-                {
-                    throw new Exception("Left operator of assigment must be a variable");
-                }
-
-                return new BinaryExpressionNode(expression, rightExpression, operation.Code);
+                expression = new BinaryExpressionNode(expression, rightExpression, operation.Code);
             }
 
             return expression;

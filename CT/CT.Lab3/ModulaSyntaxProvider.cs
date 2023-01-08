@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CT.Lab3.CommonCode.ConcreteLanguageSyntax
 {
-    public class ModulaSyntaxProvider : DefaultLanguageProvider
+    public class ModulaSyntaxProvider : CommonLanguageProvider
     {
         public override char[] Punctuations => new char[] { '{', '}', '(', ')', ',', ';', '.', };
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CT.Lab3.CommonCode.ConcreteLanguageSyntax
 {
-    public abstract class DefaultLanguageProvider : ISyntaxProvider
+    public abstract class CommonLanguageProvider : ISyntaxProvider
     {
         public char[] Operators => new char[] { '+', '-', '*', '/', ':', '=', '&', '|', '<', '>' };
 

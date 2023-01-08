@@ -55,9 +55,9 @@ namespace CT.Lab3.ModulaTests
             var conditionExpression = condition.Condition as BinaryExpressionNode;
 
             Assert.AreEqual("=", conditionExpression.Operation.ToString());
-            Assert.True(conditionExpression.LeftNode is GetVariableValueExpression);
+            Assert.True(conditionExpression.LeftNode is Variable);
             Assert.True(conditionExpression.RightNode is LiteralExpression);
-            Assert.AreEqual("Index1", (conditionExpression.LeftNode as GetVariableValueExpression).Name);
+            Assert.AreEqual("Index1", (conditionExpression.LeftNode as Variable).Name);
             Assert.AreEqual("2", (conditionExpression.RightNode as LiteralExpression).Value.ToString());
 
             Assert.True(condition.ElseNode is ConditionNode);

@@ -6,7 +6,7 @@ namespace CT.Lab3.AST
 {
     public class VariableAssigmentNode : BinaryExpressionNode
     {
-        public VariableAssigmentNode(IdentifierNode identifier, ExpressionNode value) : base(identifier, value, ":=")
+        public VariableAssigmentNode(Variable identifier, ExpressionNode value) : base(identifier, value, ":=")
         {
         }
     }

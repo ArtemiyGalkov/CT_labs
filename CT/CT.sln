@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CT.Lab3.Modula", "CT.Lab3\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CT.Lab3.Modula.Tests", "CT.Lab3.ModulaTests\CT.Lab3.Modula.Tests.csproj", "{ACD697C5-FE83-4ABA-B34C-DC243106306A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CT.Lab3.CommonCode", "CT.Lab3.CommonCode\CT.Lab3.CommonCode.csproj", "{7B472797-E8B2-41A3-BCD2-F83AD3ABAB87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CT.Lab3.CommonCode", "CT.Lab3.CommonCode\CT.Lab3.CommonCode.csproj", "{7B472797-E8B2-41A3-BCD2-F83AD3ABAB87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CT.Lab3.BASIC", "CT.Lab3.BASIC\CT.Lab3.BASIC.csproj", "{0A750AF4-5C92-4E0C-A4F7-D6C9CDBAF1B5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CT.Lab3.BASIC.Tests", "CT.Lab3.BASIC.Tests\CT.Lab3.BASIC.Tests.csproj", "{7556D64A-975E-43E8-A9A4-B55D331A9FEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CT.Lab3.Go", "CT.Lab3.Go\CT.Lab3.Go.csproj", "{E62D53AA-0142-47D3-A868-766517FE63CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,18 @@ Global
 		{7B472797-E8B2-41A3-BCD2-F83AD3ABAB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B472797-E8B2-41A3-BCD2-F83AD3ABAB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B472797-E8B2-41A3-BCD2-F83AD3ABAB87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A750AF4-5C92-4E0C-A4F7-D6C9CDBAF1B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A750AF4-5C92-4E0C-A4F7-D6C9CDBAF1B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A750AF4-5C92-4E0C-A4F7-D6C9CDBAF1B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A750AF4-5C92-4E0C-A4F7-D6C9CDBAF1B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7556D64A-975E-43E8-A9A4-B55D331A9FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7556D64A-975E-43E8-A9A4-B55D331A9FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7556D64A-975E-43E8-A9A4-B55D331A9FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7556D64A-975E-43E8-A9A4-B55D331A9FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62D53AA-0142-47D3-A868-766517FE63CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E62D53AA-0142-47D3-A868-766517FE63CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E62D53AA-0142-47D3-A868-766517FE63CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E62D53AA-0142-47D3-A868-766517FE63CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,12 @@
+LET S = 0;
+INPUT "What is your name: "; U$
+PRINT "Hello "; U$
+INPUT "How many stars do you want: "; N
+S$ = ""
+PRINT S$
+INPUT "Do you want more stars? "; A$
+IF LEN(A$) = 0 THEN GOTO 90
+A$ = LEFT$(A$, 1)
+IF A$ = "Y" THEN GOTO 30 ELSE PRINT "Else block";
+PRINT "Goodbye "; U$
+END
