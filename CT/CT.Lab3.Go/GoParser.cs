@@ -197,11 +197,12 @@ namespace CT.Lab3.Go
 
             if (CheckLexem(LexemType.Operator, "="))
             {
+                currentIndex++;
                 variableValues.Add(ParseExpression());
 
-                while (lexems[currentIndex + 1].Code.ToString() == ",")
+                while (lexems[currentIndex].Code.ToString() == ",")
                 {
-                    SkipPunctuation(",");
+                    SkipPunctuation(",", false);
                     variableValues.Add(ParseExpression());
                 }
             }
@@ -375,9 +376,8 @@ namespace CT.Lab3.Go
                 return new VariableAssigmentNode(expression as Variable, rightExpression);
             }
 
-            while (CheckLexem(LexemType.Operator))
+            while (IsOperator(out Lexem operation))
             {
-                var operation = lexems[currentIndex++];
                 var rightExpression = ParseExpression();
 
                 expression = new BinaryExpressionNode(expression, rightExpression, operation.Code);
@@ -478,6 +478,33 @@ namespace CT.Lab3.Go
             return lexems[currentIndex].Type == lexemType;
         }
 
+        private bool IsOperator(out Lexem currentOperation)
+        {
+            currentOperation = null;
+
+            if (CheckLexem(LexemType.Operator, "&"))
+            {
+                SkipLexem(LexemType.Operator, "&");
+                currentOperation = new Lexem("&&") { Type = LexemType.Operator };
+                currentIndex++;
+            }
+            else if (CheckLexem(LexemType.Operator, "|"))
+            {
+                SkipLexem(LexemType.Operator, "|");
+                currentOperation = new Lexem("||") { Type = LexemType.Operator };
+                currentIndex++;
+            }
+            else if (CheckLexem(LexemType.Operator))
+            {
+                currentOperation = lexems[currentIndex++];
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
         #endregion
     }
 }

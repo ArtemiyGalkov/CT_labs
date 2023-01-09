@@ -14,6 +14,25 @@ namespace CT.Lab3.CommonCode.ConcreteLanguageSyntax
 
         public override string[] KeyWords => new string[]
             { "MODULE", "CONST", "VAR", "BEGIN", "END", "REPEAT", "UNTIL", "WHILE", "FOR",
-            "TO", "BY", "DO", "LOOP", "IF", "THEN", "ELSE", "ELSIF", "EXIT", "CASE", "OF" };
+            "TO", "BY", "DO", "LOOP", "IF", "THEN", "ELSE", "ELSIF", "EXIT", "CASE", "OF", "OR", "AND" };
+
+        public override Dictionary<string, int> OperatorsPriority => new Dictionary<string, int>()
+        {
+            { "<", 1 },
+            { "<>", 1 },
+            { "=<", 1 },
+            { ">", 1 },
+            { ">=", 1 },
+            { "=", 1 },
+
+            { "+", 2 },
+            { "-", 2 },
+
+            { "*", 3 },
+            { "/", 3 },
+
+            { "OR", 4 },
+            { "AND", 4 },
+        };
     }
 }

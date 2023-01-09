@@ -258,9 +258,8 @@ namespace CT.Lab3
                 //currentIndex++;
             }
 
-            while (CheckLexem(LexemType.Operator))
+            while (IsOperator(out Lexem operation))
             {
-                var operation = lexems[currentIndex++];
                 var rightExpression = ParseExpression();
 
                 expression = new BinaryExpressionNode(expression, rightExpression, operation.Code);
@@ -369,6 +368,32 @@ namespace CT.Lab3
         private bool ProgramBlockEnd()
         {
             return CheckLexem(LexemType.Keyword, "END") || CheckLexem(LexemType.Keyword, "THEN") || CheckLexem(LexemType.Keyword, "ELSE") || CheckLexem(LexemType.Keyword, "ELSIF");
+        }
+
+        private bool IsOperator(out Lexem currentOperation)
+        {
+            currentOperation = null;
+
+            if (CheckLexem(LexemType.Keyword, "OR"))
+            {
+                currentOperation = new Lexem("OR") { Type = LexemType.Operator };
+                currentIndex++;
+            }
+            else if (CheckLexem(LexemType.Keyword, "AND"))
+            {
+                currentOperation = new Lexem("AND") { Type = LexemType.Operator };
+                currentIndex++;
+            }
+            else if (CheckLexem(LexemType.Operator))
+            {
+                currentOperation = lexems[currentIndex++];
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

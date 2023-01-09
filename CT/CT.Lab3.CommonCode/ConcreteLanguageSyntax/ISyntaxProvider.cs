@@ -12,5 +12,6 @@ namespace CT.Lab3.CommonCode
         public char[] StringContainer { get; }
         public char[] CharContainer { get; }
         public string[] KeyWords { get; }
+        public Dictionary<string, int> OperatorsPriority { get; }
     }
 }

@@ -14,9 +14,28 @@ namespace CT.Lab3.Modula
         public override char[] CharContainer => new char[] { '\'', };
 
         public override string[] KeyWords => new string[]
-            { 
-                "break","default","func","interface","struct","select","case","Go","map","else","package",
-                "Goto","switch","const","if","range","type","continue","for","import","return","var",
-            };
-    }
+        { 
+            "break","default","func","interface","struct","select","case","Go","map","else","package",
+            "Goto","switch","const","if","range","type","continue","for","import","return","var",
+        };
+
+        public override Dictionary<string, int> OperatorsPriority => new Dictionary<string, int>()
+        {
+            { "<", 1 },
+            { "<>", 1 },
+            { "=<", 1 },
+            { ">", 1 },
+            { ">=", 1 },
+            { "=", 1 },
+
+            { "+", 2 },
+            { "-", 2 },
+
+            { "*", 3 },
+            { "/", 3 },
+
+            { "||", 4 },
+            { "&&", 4 },
+        };
+    };
 }

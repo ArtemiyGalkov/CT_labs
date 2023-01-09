@@ -17,5 +17,7 @@ namespace CT.Lab3.CommonCode.ConcreteLanguageSyntax
         public abstract char[] CharContainer { get; }
 
         public abstract string[] KeyWords { get; }
+
+        public abstract Dictionary<string, int> OperatorsPriority { get; }
     }
 }

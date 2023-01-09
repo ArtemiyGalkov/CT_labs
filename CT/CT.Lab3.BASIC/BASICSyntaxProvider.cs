@@ -15,5 +15,23 @@ namespace CT.Lab3.BASIC
 
         public override string[] KeyWords => new string[]
             { "LET", "INPUT", "PRINT", "FOR", "NEXT", "GOTO", "IF", "THEN", "ELSE", "OR", "DEF", "READ", "DATA", "END" };
+
+        public override Dictionary<string, int> OperatorsPriority => new Dictionary<string, int>()
+        {
+            { "<", 1 },
+            { "<>", 1 },
+            { "=<", 1 },
+            { ">", 1 },
+            { ">=", 1 },
+            { "=", 1 },
+
+            { "+", 2 },
+            { "-", 2 },
+
+            { "*", 3 },
+            { "/", 3 },
+
+            { "OR", 4 },
+        };
     }
 }
