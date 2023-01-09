@@ -17,4 +17,10 @@
     <ProjectReference Include="..\CT.Lab3.BASIC\CT.Lab3.BASIC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Code.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
