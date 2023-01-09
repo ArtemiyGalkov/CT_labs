@@ -24,5 +24,10 @@ namespace CT.Lab3.AST
         {
             get => arguments;
         }
+
+        public override string ToString()
+        {
+            return methodName;
+        }
     }
 }

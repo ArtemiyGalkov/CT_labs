@@ -1,5 +1,5 @@
 using CT.Lab3.AST;
-using CT.Lab3.CommonCode.ConcreteLanguageSyntax;
+using CT.Lab3.Modula;
 using NUnit.Framework;
 using System.IO;
 using System.Text.RegularExpressions;

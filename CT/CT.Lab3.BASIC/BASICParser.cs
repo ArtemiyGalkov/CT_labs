@@ -1,5 +1,6 @@
 ﻿using CT.Lab3.AST;
 using CT.Lab3.BASIC.SpecificASTNodes;
+using CT.Lab3.CommonCode;
 using CT.Lab3.CommonCode.AST;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace CT.Lab3.BASIC
     {
         private Lexem[] lexems;
         int currentIndex = 0;
+        ExpressionHelper expressionHelper = new ExpressionHelper(new BASICSyntaxProvider());
 
         public List<ASTNode> ParseLexemas(Lexem[] lexems)
         {
@@ -151,21 +153,39 @@ namespace CT.Lab3.BASIC
 
         private ExpressionNode ParseExpression()
         {
+            var operandsList = new List<object>();
+            ParseExpression(operandsList);
+            var result = expressionHelper.ParseToExpressionTree(operandsList);
+
+            return result;
+        }
+
+        private void ParseExpression(List<object> operandsList)
+        {
             ExpressionNode expression;
 
             if (CheckLexem(LexemType.Punctuation, "("))
             {
-                SkipPunctuation("(");
-                expression = ParseExpression();
-                SkipPunctuation(")");
+                operandsList.Add(lexems[currentIndex]);
+                SkipPunctuation("(", false);
+
+
+                ParseExpression(operandsList);
+
+                operandsList.Add(lexems[currentIndex]);
+                SkipPunctuation(")", false);
+
+                expression = null;
             }
             else if (CheckLexem(LexemType.Number))
             {
                 expression = ParseLiteralExpression();
+                operandsList.Add(expression);
             }
             else if (CheckLexem(LexemType.String))
             {
                 expression = ParseLiteralExpression();
+                operandsList.Add(expression);
             }
             else if (CheckLexem(LexemType.Identifier))
             {
@@ -180,21 +200,20 @@ namespace CT.Lab3.BASIC
                     var variable = ParseIdentifier(identifier);
                     expression = new Variable(variable.Code.ToString());
                 }
+
+                operandsList.Add(expression);
             }
             else
             {
                 expression = null;
             }
 
-            while (CheckLexem(LexemType.Operator) || CheckLexem(LexemType.Keyword, "OR"))
+            while (IsOperator(out Lexem operation))
             {
-                var operation = lexems[currentIndex++];
-                var rightExpression = ParseExpression();
+                operandsList.Add(operation);
 
-                expression = new BinaryExpressionNode(expression, rightExpression, operation.Code);
+                ParseExpression(operandsList);
             }
-
-            return expression;
         }
 
         private LiteralExpression ParseLiteralExpression()
@@ -301,6 +320,27 @@ namespace CT.Lab3.BASIC
         private bool CheckLexem(LexemType lexemType)
         {
             return lexems[currentIndex].Type == lexemType;
+        }
+
+        private bool IsOperator(out Lexem currentOperation)
+        {
+            currentOperation = null;
+
+            if (CheckLexem(LexemType.Keyword, "OR"))
+            {
+                currentOperation = new Lexem("OR") { Type = LexemType.Operator };
+                currentIndex++;
+            }
+            else if (CheckLexem(LexemType.Operator))
+            {
+                currentOperation = lexems[currentIndex++];
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

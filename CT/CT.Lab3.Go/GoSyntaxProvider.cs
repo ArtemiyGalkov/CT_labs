@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CT.Lab3.Modula
+namespace CT.Lab3.Go
 {
     public class GoSyntaxProvider : CommonLanguageProvider
     {

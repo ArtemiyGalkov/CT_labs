@@ -14,5 +14,10 @@ namespace CT.Lab3.AST
         }
 
         public object Value => value;
+
+        public override string ToString()
+        {
+            return value.ToString();
+        }
     }
 }

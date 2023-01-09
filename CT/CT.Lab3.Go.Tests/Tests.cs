@@ -2,8 +2,9 @@ using CT.Lab3.AST;
 using CT.Lab3.CommonCode;
 using CT.Lab3.CommonCode.AST;
 using CT.Lab3.CommonCode.ConcreteLanguageSyntax;
-using CT.Lab3.Modula;
+using CT.Lab3.Go;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -67,41 +68,34 @@ namespace CT.Lab3.Go.Tests
         }
 
         [Test]
-        public void ExpressionNormalizationTest_arithmetic()
+        public void ProgramWithConditionTest_arithmetic()
         {
-            var code = "func main() { var a int = 1 + 2 / 3 - 4 * 5 }";
+            var code = "func main() { var a int = 1 - 2 / 3 } ";
             code = Regex.Replace(code, @"\t|\n|\r", " ");
 
             var lexems = lexemParser.ParseToLexems(code);
             var tree = astParser.ParseLexemas(lexems.ToArray());
-            var helper = new BinaryTreeHelper(new GoSyntaxProvider());
+            var expression = ((tree[0] as MethodDeclarationNode).MethodBody.Nodes[0] as VariableInitializationNode).ValueExpressions[0] as BinaryExpressionNode;
 
-            var expression = ((tree[0] as MethodDeclarationNode).MethodBody.Nodes[0] as VariableInitializationNode).ValueExpression[0] as BinaryExpressionNode;
-            expression = helper.NormalizeExpressionTree(expression);
-
-            Assert.AreEqual("+", expression.Operation.ToString());
+            Assert.AreEqual("-", expression.Operation.ToString());
             Assert.AreEqual("1", (expression.LeftNode as LiteralExpression).Value.ToString());
-            Assert.AreEqual("-", (expression.RightNode as BinaryExpressionNode).Operation.ToString());
-            Assert.AreEqual("/", ((expression.RightNode as BinaryExpressionNode).LeftNode as BinaryExpressionNode).Operation.ToString());
-            Assert.AreEqual("*", ((expression.RightNode as BinaryExpressionNode).RightNode as BinaryExpressionNode).Operation.ToString());
-            Assert.AreEqual("4", (((expression.RightNode as BinaryExpressionNode).RightNode as BinaryExpressionNode).LeftNode as LiteralExpression).Value.ToString());
-            Assert.AreEqual("5", (((expression.RightNode as BinaryExpressionNode).RightNode as BinaryExpressionNode).RightNode as LiteralExpression).Value.ToString());
+            Assert.AreEqual("/", (expression.RightNode as BinaryExpressionNode).Operation.ToString());
+            Assert.AreEqual("2", ((expression.RightNode as BinaryExpressionNode).LeftNode as LiteralExpression).Value.ToString());
+            Assert.AreEqual("3", ((expression.RightNode as BinaryExpressionNode).RightNode as LiteralExpression).Value.ToString());
+
         }
 
         [Test]
-        public void ExpressionNormalizationTest_brackets()
+        public void ProgramWithConditionTest_brackets()
         {
-            var code = "func main() { var a int = (1 + 2) / (3 - 4) * 5 }";
+            var code = "func main() { var a int = (1 + 2) * (3 - 4) / 5 } ";
             code = Regex.Replace(code, @"\t|\n|\r", " ");
 
             var lexems = lexemParser.ParseToLexems(code);
             var tree = astParser.ParseLexemas(lexems.ToArray());
-            var helper = new BinaryTreeHelper(new GoSyntaxProvider());
+            var expression = ((tree[0] as MethodDeclarationNode).MethodBody.Nodes[0] as VariableInitializationNode).ValueExpressions[0] as BinaryExpressionNode;
 
-            var expression = ((tree[0] as MethodDeclarationNode).MethodBody.Nodes[0] as VariableInitializationNode).ValueExpression[0] as BinaryExpressionNode;
-            expression = helper.NormalizeExpressionTree(expression);
-
-            Assert.AreEqual("+", expression.Operation.ToString());
+            Assert.AreEqual("/", expression.Operation.ToString());
         }
     }
 }

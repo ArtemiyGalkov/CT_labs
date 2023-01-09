@@ -1,4 +1,6 @@
 ﻿using CT.Lab3.AST;
+using CT.Lab3.CommonCode;
+using CT.Lab3.Modula;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ namespace CT.Lab3
         {
             "INTEGER", "CARDINAL", "REAL", "LONGREAL", "CARDINAL", "BOOLEAN",
         };
+        ExpressionHelper expressionHelper = new ExpressionHelper(new ModulaSyntaxProvider());
 
         public ModulaParser()
         {
@@ -205,21 +208,38 @@ namespace CT.Lab3
 
         private ExpressionNode ParseExpression()
         {
+            var operandsList = new List<object>();
+            ParseExpression(operandsList);
+            var result = expressionHelper.ParseToExpressionTree(operandsList);
+
+            return result;
+        }
+
+        private void ParseExpression(List<object> operandsList)
+        {
             ExpressionNode expression;
 
             if (CheckLexem(LexemType.Punctuation, "("))
             {
-                SkipPunctuation("(");
-                expression = ParseExpression();
-                SkipPunctuation(")");
+                operandsList.Add(lexems[currentIndex]);
+                SkipPunctuation("(", false);
+
+                ParseExpression(operandsList);
+
+                operandsList.Add(lexems[currentIndex]);
+                SkipPunctuation(")", false);
+
+                expression = null;
             }
             else if (CheckLexem(LexemType.Number))
             {
                 expression = ParseLiteralExpression();
+                operandsList.Add(expression);
             }
             else if (CheckLexem(LexemType.String))
             {
                 expression = ParseLiteralExpression();
+                operandsList.Add(expression);
             }
             else if (CheckLexem(LexemType.Identifier))
             {
@@ -233,6 +253,8 @@ namespace CT.Lab3
                 {
                     expression = new Variable(identifier.Code.ToString());
                 }
+
+                operandsList.Add(expression);
             }
             else
             {
@@ -251,21 +273,15 @@ namespace CT.Lab3
 
                 var rightExpression = ParseExpression();
 
-                return new VariableAssigmentNode(expression as Variable, rightExpression);
-            }
-            else
-            {
-                //currentIndex++;
+                operandsList.Add(new VariableAssigmentNode(expression as Variable, rightExpression));
             }
 
             while (IsOperator(out Lexem operation))
             {
-                var rightExpression = ParseExpression();
+                operandsList.Add(operation);
 
-                expression = new BinaryExpressionNode(expression, rightExpression, operation.Code);
+                ParseExpression(operandsList);
             }
-
-            return expression;
         }
 
         private LiteralExpression ParseLiteralExpression()

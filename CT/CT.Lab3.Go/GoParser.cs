@@ -1,4 +1,5 @@
 ﻿using CT.Lab3.AST;
+using CT.Lab3.CommonCode;
 using CT.Lab3.CommonCode.AST;
 using CT.Lab3.Go.SpecificASTNodes;
 using System;
@@ -13,6 +14,7 @@ namespace CT.Lab3.Go
         private Lexem[] lexems;
         int currentIndex = 0;
         bool insideProgramBlock = false;
+        ExpressionHelper expressionHelper = new ExpressionHelper(new GoSyntaxProvider());
 
         private string[] basicTypes = new string[]
         {
@@ -327,21 +329,39 @@ namespace CT.Lab3.Go
 
         private ExpressionNode ParseExpression()
         {
+            var operandsList = new List<object>();
+            ParseExpression(operandsList);
+            var result = expressionHelper.ParseToExpressionTree(operandsList);
+
+            return result;
+        }
+
+        private void ParseExpression(List<object> operandsList)
+        {
             ExpressionNode expression;
 
             if (CheckLexem(LexemType.Punctuation, "("))
             {
+                operandsList.Add(lexems[currentIndex]);
                 SkipPunctuation("(", false);
-                expression = ParseExpression();
+
+
+                ParseExpression(operandsList);
+
+                operandsList.Add(lexems[currentIndex]);
                 SkipPunctuation(")", false);
+
+                expression = null;
             }
             else if (CheckLexem(LexemType.Number))
             {
                 expression = ParseLiteralExpression();
+                operandsList.Add(expression);
             }
             else if (CheckLexem(LexemType.String))
             {
                 expression = ParseLiteralExpression();
+                operandsList.Add(expression);
             }
             else if (CheckLexem(LexemType.Identifier))
             {
@@ -355,6 +375,8 @@ namespace CT.Lab3.Go
                 {
                     expression = new Variable(identifier.Code.ToString());
                 }
+
+                operandsList.Add(expression);
             }
             else
             {
@@ -373,17 +395,15 @@ namespace CT.Lab3.Go
 
                 var rightExpression = ParseExpression();
 
-                return new VariableAssigmentNode(expression as Variable, rightExpression);
+                operandsList.Add(new VariableAssigmentNode(expression as Variable, rightExpression));
             }
 
             while (IsOperator(out Lexem operation))
             {
-                var rightExpression = ParseExpression();
+                operandsList.Add(operation);
 
-                expression = new BinaryExpressionNode(expression, rightExpression, operation.Code);
+                ParseExpression(operandsList);
             }
-
-            return expression;
         }
 
         private LiteralExpression ParseLiteralExpression()

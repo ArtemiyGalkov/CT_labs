@@ -14,6 +14,6 @@ namespace CT.Lab3.CommonCode.AST
             this.assigningExpression = assigningExpression;
         }
 
-        public ExpressionNode[] ValueExpression => assigningExpression;
+        public ExpressionNode[] ValueExpressions => assigningExpression;
     }
 }

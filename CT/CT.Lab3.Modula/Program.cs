@@ -1,4 +1,5 @@
 ﻿using CT.Lab3.CommonCode.ConcreteLanguageSyntax;
+using CT.Lab3.Modula;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;

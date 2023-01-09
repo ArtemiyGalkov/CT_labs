@@ -14,5 +14,10 @@ namespace CT.Lab3.AST
         }
 
         public string Name => name;
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }
