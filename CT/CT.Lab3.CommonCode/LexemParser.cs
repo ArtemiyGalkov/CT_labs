@@ -79,6 +79,16 @@ namespace CT.Lab3
                 i++;
             }
 
+            if (_code[i + 1] == '.')
+            {
+                lexem.Code.Append(_code[i++]);
+
+                while (i < _code.Length && syntaxProvider.Digits.Contains(_code[i + 1]))
+                {
+                    lexem.Code.Append(_code[i++]);
+                }
+            }
+
             return lexem;
         }
 
@@ -88,8 +98,7 @@ namespace CT.Lab3
 
             do
             {
-                lexem.Code.Append(_code[i + 1]);
-                i++;
+                lexem.Code.Append(_code[i++;]);                
             }
             while (i < _code.Length && !syntaxProvider.StringContainer.Contains(_code[i]));
 
