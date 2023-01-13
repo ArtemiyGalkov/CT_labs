@@ -69,10 +69,6 @@ namespace CT.Lab3
             {
                 return ParseCondition();
             }
-            else if (currentLexem.Code.ToString() == "FOR")
-            {
-                return ParseForLoop();
-            }
 
             throw new Exception();
         }
@@ -195,11 +191,6 @@ namespace CT.Lab3
             //SkipSemicolon(false);
 
             return new ConditionNode(expression, thenNode, elseNode);
-        }
-
-        private ForLoopNode ParseForLoop()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
