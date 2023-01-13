@@ -98,7 +98,7 @@ namespace CT.Lab3
 
             do
             {
-                lexem.Code.Append(_code[i++;]);                
+                lexem.Code.Append(_code[++i]);                
             }
             while (i < _code.Length && !syntaxProvider.StringContainer.Contains(_code[i]));
 
