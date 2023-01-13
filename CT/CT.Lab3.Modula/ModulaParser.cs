@@ -254,8 +254,8 @@ namespace CT.Lab3
 
             if (CheckLexem(LexemType.Operator, ":"))
             {
-                SkipOperator(":");
-                SkipOperator("=");
+                SkipOperator(":", false);
+                SkipOperator("=", false);
 
                 if (!(expression is Variable))
                 {
@@ -320,9 +320,9 @@ namespace CT.Lab3
             SkipLexem(LexemType.Keyword, keyword, false);
         }
 
-        private void SkipOperator(string operatorName)
+        private void SkipOperator(string operatorName, bool skipNext = true)
         {
-            SkipLexem(LexemType.Operator, operatorName);
+            SkipLexem(LexemType.Operator, operatorName, skipNext);
         }
 
         private void SkipSemicolon(bool skipNext = true)
